@@ -1,5 +1,6 @@
 package com.androiddevs.mvvmnewsapp.ui.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -37,7 +38,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as NewsActivity).viewModel
         val article = args.article
-        Log.d("ARTICLE",article.title+" "+article.id)
+        var checkIfExists=viewModel.checkIfArticleExists(article.title,article.content)
         binding.webView.settings.allowFileAccess=false
         binding.webView.apply {
             webViewClient = WebViewClient()

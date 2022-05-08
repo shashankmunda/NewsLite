@@ -7,6 +7,7 @@ import android.net.ConnectivityManager
 import android.net.ConnectivityManager.*
 import android.net.NetworkCapabilities.*
 import android.os.Build
+import android.util.Log
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -16,22 +17,25 @@ import com.androiddevs.mvvmnewsapp.models.Article
 import com.androiddevs.mvvmnewsapp.models.NewsResponse
 import com.androiddevs.mvvmnewsapp.repository.NewsRepository
 import com.androiddevs.mvvmnewsapp.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okio.IOException
 import retrofit2.Response
+import javax.inject.Inject
 
-class NewsViewModel(
+@HiltViewModel
+class  NewsViewModel @Inject constructor(
     app: Application,
-    private val newsRepository: NewsRepository
+     val newsRepository: NewsRepository
 ) : AndroidViewModel(app) {
 
     val breakingNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var breakingNewsPage = 1
-    private var breakingNewsResponse: NewsResponse? = null
+    var breakingNewsResponse: NewsResponse? = null
 
     val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var searchNewsPage = 1
-    private var searchNewsResponse: NewsResponse? = null
+    var searchNewsResponse: NewsResponse? = null
     private var newSearchQuery:String? = null
     private var oldSearchQuery:String? = null
 
@@ -131,9 +135,11 @@ class NewsViewModel(
                 breakingNews.postValue(Resource.Error("No internet connection"))
             }
         } catch(t: Throwable) {
+            t.message?.let { Log.d("ERROR_MSG", it) }
             when(t) {
                 is IOException -> breakingNews.postValue(Resource.Error("Network Failure"))
                 else -> breakingNews.postValue(Resource.Error("Conversion Error"))
+
             }
         }
     }
@@ -172,6 +178,9 @@ class NewsViewModel(
         }
         val shareIntent=Intent.createChooser(sendIntent,null)
         startActivity(context,shareIntent,null)
+    }
+    fun checkIfArticleExists(title:String?,content:String?): Boolean {
+        return newsRepository.isPresent(title!!,content!!).isNotEmpty()
     }
 }
 
