@@ -17,13 +17,15 @@ import com.androiddevs.mvvmnewsapp.ui.NewsActivity
 import com.androiddevs.mvvmnewsapp.ui.NewsViewModel
 import com.androiddevs.mvvmnewsapp.util.Constants.Companion.QUERY_PAGE_SIZE
 import com.androiddevs.mvvmnewsapp.util.Resource
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
     private var _binding: FragmentBreakingNewsBinding?=null
     private val binding get()=_binding!!
     lateinit var viewModel: NewsViewModel
-    private lateinit var newsAdapter: NewsAdapter
+    @Inject lateinit var newsAdapter: NewsAdapter
 
     val TAG = "BreakingNewsFragment"
 

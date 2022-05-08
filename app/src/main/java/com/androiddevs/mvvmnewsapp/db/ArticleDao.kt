@@ -13,6 +13,8 @@ interface ArticleDao {
     @Query("SELECT * FROM articles")
     fun getAllArticles(): LiveData<List<Article>>
 
+    @Query("SELECT * FROM articles WHERE title= :title AND content=:content ")
+    fun isPresent(title: String,content: String):List<Article>
     @Delete
     suspend fun deleteArticle(article: Article)
 }

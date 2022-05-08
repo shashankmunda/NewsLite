@@ -15,6 +15,7 @@ import com.androiddevs.mvvmnewsapp.databinding.FragmentSavedNewsBinding
 import com.androiddevs.mvvmnewsapp.ui.NewsActivity
 import com.androiddevs.mvvmnewsapp.ui.NewsViewModel
 import com.google.android.material.snackbar.Snackbar
+import javax.inject.Inject
 
 class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
@@ -22,7 +23,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
     private val binding get()=_binding!!
 
     lateinit var viewModel: NewsViewModel
-    lateinit var newsAdapter: NewsAdapter
+    @Inject lateinit var newsAdapter: NewsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,

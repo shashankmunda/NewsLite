@@ -1,21 +1,33 @@
 package com.androiddevs.mvvmnewsapp.repository
 
-import com.androiddevs.mvvmnewsapp.api.RetrofitInstance
-import com.androiddevs.mvvmnewsapp.db.ArticleDatabase
+import androidx.lifecycle.LiveData
+import com.androiddevs.mvvmnewsapp.api.NewsAPI
+import com.androiddevs.mvvmnewsapp.db.ArticleDao
 import com.androiddevs.mvvmnewsapp.models.Article
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import javax.inject.Inject
 
-class NewsRepository(
-    private val db: ArticleDatabase
+@Module
+@InstallIn(SingletonComponent::class)
+class NewsRepository @Inject constructor(
+    val articleDao: ArticleDao
+    ,val apiService: NewsAPI
 ) {
+
     suspend fun getBreakingNews(countryCode: String, pageNumber: Int) =
-        RetrofitInstance.api.getBreakingNews(countryCode, pageNumber)
+        apiService.getBreakingNews(countryCode, pageNumber)
 
     suspend fun searchNews(searchQuery: String, pageNumber: Int) =
-        RetrofitInstance.api.searchForNews(searchQuery, pageNumber)
+        apiService.searchForNews(searchQuery, pageNumber)
 
-    suspend fun upsert(article: Article) = db.getArticleDao().upsert(article)
+    suspend fun upsert(article: Article) = articleDao.upsert(article)
 
-    fun getSavedNews() = db.getArticleDao().getAllArticles()
+    fun getSavedNews() = articleDao.getAllArticles()
 
-    suspend fun deleteArticle(article: Article) = db.getArticleDao().deleteArticle(article)
+    fun isPresent(title: String,content: String)=articleDao.isPresent(title,content)
+
+    suspend fun deleteArticle(article: Article) = articleDao.deleteArticle(article)
 }

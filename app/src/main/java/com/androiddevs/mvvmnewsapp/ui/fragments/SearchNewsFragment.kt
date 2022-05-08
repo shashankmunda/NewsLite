@@ -23,13 +23,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
     private var _binding:FragmentSearchNewsBinding?=null
     private val binding get()=_binding!!
     lateinit var viewModel: NewsViewModel
-    private lateinit var newsAdapter: NewsAdapter
+    @Inject lateinit var newsAdapter: NewsAdapter
     val TAG = "SearchNewsFragment"
 
     override fun onCreateView(
