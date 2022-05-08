@@ -1,4 +1,4 @@
-package com.androiddevs.mvvmnewsapp
+package com.shashankmunda.newslite
 
 import org.junit.Test
 
